@@ -17,6 +17,8 @@ apiVersion: mc.k8s.lex.la/v1beta1
 kind: PaperMCServer
 metadata:
   name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   updateStrategy: {{ .Values.updateStrategy }}
   {{- if .Values.version }}
