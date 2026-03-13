@@ -1,78 +1,14 @@
 ---
 apiVersion: cozystack.io/v1alpha1
-kind: CozystackResourceDefinition
+kind: ApplicationDefinition
 metadata:
   name: minecraft-server
-  namespace: cozy-system
 spec:
   application:
     kind: MinecraftServer
     plural: minecraftservers
     singular: minecraft-server
-    openAPISchema: |
-      {
-        "title": "Minecraft Server",
-        "type": "object",
-        "properties": {
-          "updateStrategy": {
-            "description": "Update strategy for Paper version.",
-            "type": "string",
-            "enum": ["latest", "auto", "pin", "build-pin"],
-            "default": "latest"
-          },
-          "version": {
-            "description": "Target Minecraft version (required for pin/build-pin).",
-            "type": "string",
-            "default": ""
-          },
-          "storageSize": {
-            "description": "Persistent volume size for world data.",
-            "type": "string",
-            "default": "10Gi"
-          },
-          "storageClass": {
-            "description": "Storage class for persistent volumes.",
-            "type": "string",
-            "default": ""
-          },
-          "memoryLimit": {
-            "description": "Memory limit for the server container.",
-            "type": "string",
-            "default": "2Gi"
-          },
-          "cpuLimit": {
-            "description": "CPU limit for the server container.",
-            "type": "string",
-            "default": "2"
-          },
-          "serviceType": {
-            "description": "Service type (LoadBalancer, NodePort, ClusterIP).",
-            "type": "string",
-            "enum": ["LoadBalancer", "NodePort", "ClusterIP"],
-            "default": "LoadBalancer"
-          },
-          "backupEnabled": {
-            "description": "Enable VolumeSnapshot-based backups.",
-            "type": "boolean",
-            "default": false
-          },
-          "backupSchedule": {
-            "description": "Cron schedule for periodic backups.",
-            "type": "string",
-            "default": "0 */6 * * *"
-          },
-          "backupRetention": {
-            "description": "Maximum number of backup snapshots to keep.",
-            "type": "integer",
-            "default": 10
-          },
-          "checkCron": {
-            "description": "Cron schedule for checking updates.",
-            "type": "string",
-            "default": "0 */4 * * *"
-          }
-        }
-      }
+    openAPISchema: '{"title":"Minecraft Server","type":"object","properties":{"updateStrategy":{"description":"Update strategy for Paper version.","type":"string","enum":["latest","auto","pin","build-pin"],"default":"latest"},"version":{"description":"Target Minecraft version (required for pin/build-pin).","type":"string","default":""},"storageSize":{"description":"Persistent volume size for world data.","type":"string","default":"10Gi"},"storageClass":{"description":"Storage class for persistent volumes.","type":"string","default":""},"memoryLimit":{"description":"Memory limit for the server container.","type":"string","default":"2Gi"},"cpuLimit":{"description":"CPU limit for the server container.","type":"string","default":"2"},"serviceType":{"description":"Service type.","type":"string","enum":["LoadBalancer","NodePort","ClusterIP"],"default":"LoadBalancer"},"backupEnabled":{"description":"Enable VolumeSnapshot-based backups.","type":"boolean","default":false},"backupSchedule":{"description":"Cron schedule for periodic backups.","type":"string","default":"0 */6 * * *"},"backupRetention":{"description":"Maximum number of backup snapshots to keep.","type":"integer","default":10},"checkCron":{"description":"Cron schedule for checking updates.","type":"string","default":"0 */4 * * *"}}}'
   release:
     chart:
       name: ./packages/apps/minecraft-server
@@ -91,3 +27,84 @@ spec:
     tags:
       - gaming
       - minecraft
+    keysOrder:
+      - - apiVersion
+      - - appVersion
+      - - kind
+      - - metadata
+      - - metadata
+        - name
+      - - spec
+        - updateStrategy
+      - - spec
+        - version
+      - - spec
+        - storageSize
+      - - spec
+        - storageClass
+      - - spec
+        - memoryLimit
+      - - spec
+        - cpuLimit
+      - - spec
+        - serviceType
+      - - spec
+        - backupEnabled
+      - - spec
+        - backupSchedule
+      - - spec
+        - backupRetention
+      - - spec
+        - checkCron
+---
+apiVersion: cozystack.io/v1alpha1
+kind: ApplicationDefinition
+metadata:
+  name: minecraft-plugin
+spec:
+  application:
+    kind: MinecraftPlugin
+    plural: minecraftplugins
+    singular: minecraft-plugin
+    openAPISchema: '{"title":"Minecraft Plugin","type":"object","properties":{"sourceType":{"description":"Plugin source type.","type":"string","enum":["hangar","url"],"default":"hangar"},"project":{"description":"Plugin project identifier on Hangar.","type":"string","default":""},"url":{"description":"Direct download URL (for sourceType: url).","type":"string","default":""},"checksum":{"description":"SHA256 hash of the JAR file.","type":"string","default":""},"updateStrategy":{"description":"Update strategy.","type":"string","enum":["latest","auto","pin","build-pin"],"default":"latest"},"version":{"description":"Target plugin version (required for pin/build-pin).","type":"string","default":""},"instanceSelector":{"description":"Label selector to match PaperMCServer instances.","type":"object","default":{},"properties":{"matchLabels":{"type":"object","additionalProperties":{"type":"string"}}}},"port":{"description":"Network port exposed by this plugin (0 = none).","type":"integer","default":0}}}'
+  release:
+    chart:
+      name: ./packages/apps/minecraft-plugin
+      sourceRef:
+        kind: GitRepository
+        name: cozylex
+        namespace: cozy-public
+    labels:
+      cozystack.io/ui: "true"
+    prefix: mcplugin-
+  dashboard:
+    category: PaaS
+    singular: Minecraft Plugin
+    plural: Minecraft Plugins
+    description: Managed Minecraft plugin with automatic version management and compatibility solving.
+    tags:
+      - gaming
+      - minecraft
+    keysOrder:
+      - - apiVersion
+      - - appVersion
+      - - kind
+      - - metadata
+      - - metadata
+        - name
+      - - spec
+        - sourceType
+      - - spec
+        - project
+      - - spec
+        - url
+      - - spec
+        - checksum
+      - - spec
+        - updateStrategy
+      - - spec
+        - version
+      - - spec
+        - instanceSelector
+      - - spec
+        - port
