@@ -48,6 +48,8 @@ spec:
   {{- end }}
   podTemplate:
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: papermc
           resources:
