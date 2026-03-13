@@ -16,6 +16,7 @@ metadata:
   namespace: cozylex-minecraft-operator
 spec:
   interval: 5m
+  releaseName: minecraft-operator
   targetNamespace: cozylex-minecraft-operator
   chart:
     spec:

@@ -1,0 +1,26 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: cozylex-minecraft-server
+  namespace: cozy-public
+spec:
+  interval: 5m
+  chart: ./packages/apps/minecraft-server
+  sourceRef:
+    kind: GitRepository
+    name: cozylex
+  reconcileStrategy: Revision
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmChart
+metadata:
+  name: cozylex-minecraft-plugin
+  namespace: cozy-public
+spec:
+  interval: 5m
+  chart: ./packages/apps/minecraft-plugin
+  sourceRef:
+    kind: GitRepository
+    name: cozylex
+  reconcileStrategy: Revision
