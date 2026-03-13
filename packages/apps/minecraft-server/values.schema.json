@@ -31,7 +31,7 @@
     "cpuLimit": {
       "description": "CPU limit for the server container.",
       "type": "string",
-      "default": "2"
+      "default": "2000m"
     },
     "serviceType": {
       "description": "Service type (LoadBalancer, NodePort, ClusterIP).",

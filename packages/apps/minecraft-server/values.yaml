@@ -17,7 +17,7 @@ storageClass: ""
 memoryLimit: 2Gi
 
 ## @param {string} cpuLimit=2 - CPU limit for the server container.
-cpuLimit: "2"
+cpuLimit: "2000m"
 
 ## @section Service configuration
 
