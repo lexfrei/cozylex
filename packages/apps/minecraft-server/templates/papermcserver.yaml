@@ -57,26 +57,3 @@ spec:
             limits:
               memory: {{ .Values.memoryLimit | quote }}
               cpu: {{ .Values.cpuLimit | quote }}
-          volumeMounts:
-            - name: data
-              mountPath: /data
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-data
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: {{ .Release.Name }}-data
-spec:
-  accessModes:
-    - ReadWriteOnce
-  {{- if .Values.storageClass }}
-  storageClassName: {{ .Values.storageClass | quote }}
-  {{- end }}
-  resources:
-    requests:
-      storage: {{ .Values.storageSize }}
